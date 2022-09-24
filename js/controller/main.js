@@ -2,6 +2,7 @@
 var arr = [];
 var dsnv = new DSNV();
 var validation = new Validation();
+var currentFormat = new Intl.NumberFormat("VN-vn");
 /** Call function */
 getLocalStorage();
 
@@ -70,7 +71,7 @@ function renderTable(data) {
         <td>${nv.email}</td>
         <td>${nv.date}</td>
         <td>${nv.chucvu}</td>
-        <td>${nv.tongLuong}</td>
+        <td>${currentFormat.format(nv.tongLuong)}</td>
         <td>${nv.xepLoai}</td>
         <td>
         <button data-toggle="modal" data-target="#myModal" onclick="editNV('${nv.tknv}')" type="button" class="edit-btn"><i class="fa fa-pencil-square-o"></i></button>

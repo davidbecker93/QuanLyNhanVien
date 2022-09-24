@@ -31,7 +31,6 @@ function nhanVien(
                 this.tongLuong = parseFloat(this.luongCB);
                 break;
         }
-        //this.tongLuong = (parseFloat(this.luongCB) * parseFloat(this.gioLam));
     };
 
     this.xepLoaiNV = function () {
