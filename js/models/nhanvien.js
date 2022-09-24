@@ -20,7 +20,18 @@ function nhanVien(
     this.xepLoai = 0;
 
     this.tinhTongLuong = function () {
-        this.tongLuong = (parseFloat(this.luongCB) * parseFloat(this.gioLam));
+        switch (this.chucvu) {
+            case "Sếp":
+                this.tongLuong = parseFloat(this.luongCB) * 3;
+                break;
+            case "Trưởng phòng":
+                this.tongLuong = parseFloat(this.luongCB) * 2;
+                break;
+            default:
+                this.tongLuong = parseFloat(this.luongCB);
+                break;
+        }
+        //this.tongLuong = (parseFloat(this.luongCB) * parseFloat(this.gioLam));
     };
 
     this.xepLoaiNV = function () {

@@ -1,6 +1,7 @@
 /** Global Variable */
 var arr = [];
 var dsnv = new DSNV();
+var validation = new Validation();
 /** Call function */
 getLocalStorage();
 
@@ -23,28 +24,41 @@ function getEle(id) {
 }
 
 function layThongTin() {
-    var tknv = +getEle("tknv").value;
+    var tknv = getEle("tknv").value;
     var name = getEle("name").value;
     var email = getEle("email").value;
     var pass = getEle("password").value;
     var date = getEle("datepicker").value;
-    var luongCB = +getEle("luongCB").value;
+    var luongCB = getEle("luongCB").value;
     var chucvu = getEle("chucvu").value;
-    var gioLam = +getEle("gioLam").value;
-    var nv = new nhanVien(tknv, name, email, pass, date, luongCB, chucvu, gioLam);
-    nv.tinhTongLuong();
-    nv.xepLoaiNV();
-    return nv;
+    var gioLam = getEle("gioLam").value;
+    isValid = true;
+    isValid &= validation.checkEmpty(tknv, "tbTKNV", "(*)Vui lòng nhập đúng mã NV");
+    isValid &= validation.checkEmpty(name, "tbTen", "(*)Vui lòng nhập tên NV");
+    if (isValid) {
+        var nv = new nhanVien(tknv, name, email, pass, date, luongCB, chucvu, gioLam);
+        nv.tinhTongLuong();
+        nv.xepLoaiNV();
+        return nv;
+    }
+    return null;
 }
+getEle("btnThem").addEventListener("click", function () {
+    resetForm();
+    getEle("btnCapNhat").style.display = "none";
+    getEle("btnThemNV").style.display = "inline-block";
+})
 
-function themNhanVien() {
+getEle("btnThemNV").addEventListener("click", function () {
     var nv = layThongTin();
     if (nv) {
         dsnv.themNV(nv);
         renderTable(dsnv.arr);
+        resetForm();
         setLocalStorage();
     }
-}
+})
+
 function renderTable(data) {
     content = "";
 
@@ -71,7 +85,7 @@ function editNV(tknv) {
     var nv = dsnv.getInfo(tknv);
     if (nv) {
         getEle("tknv").value = nv.tknv;
-        // getEle("tknv").disabled = true;
+        getEle("tknv").disabled = true;
         getEle("name").value = nv.name;
         getEle("email").value = nv.email;
         getEle("password").value = nv.pass;
@@ -79,11 +93,14 @@ function editNV(tknv) {
         getEle("luongCB").value = nv.luongCB;
         getEle("chucvu").value = nv.chucvu;
         getEle("gioLam").value = nv.gioLam;
+        getEle("btnCapNhat").style.display = "inline-block";
+        getEle("btnThemNV").style.display = "none";
     }
     getEle("btnCapNhat").addEventListener("click", function () {
         var nv = layThongTin();
         dsnv.suaNV(nv);
         renderTable(dsnv.arr);
+        //        resetForm();
         setLocalStorage();
     });
 }
@@ -92,6 +109,19 @@ function deleteNV(tknv) {
     renderTable(dsnv.arr);
     setLocalStorage();
 }
-// function resetForm() {
-//     form.reset();
-// }
+function resetForm() {
+    getEle("tknv").disabled = false;
+    getEle("tknv").value = "";
+    getEle("name").value = "";
+    getEle("email").value = "";
+    getEle("password").value = "";
+    getEle("datepicker").value = "";
+    getEle("luongCB").value = "";
+    getEle("chucvu").value = "Chọn chức vụ";
+    getEle("gioLam").value = "";
+}
+getEle("searchName").addEventListener("keyup", function () {
+    var keyword = getEle("searchName").value;
+    var mangTimKiem = dsnv.timKiemNV(keyword);
+    renderTable(mangTimKiem);
+})

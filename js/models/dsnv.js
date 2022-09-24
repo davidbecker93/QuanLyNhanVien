@@ -36,4 +36,16 @@ function DSNV() {
             this.arr[index] = nv;
         }
     };
+
+    this.timKiemNV = function (keyword) {
+        var mangTimkKiem = [];
+        this.arr.forEach(function (nv) {
+            var loaiNV = nv.xepLoai.toLowerCase();
+            var txtSearch = keyword.toLowerCase();
+            if (loaiNV.indexOf(txtSearch) !== -1) {
+                mangTimkKiem.push(nv);
+            }
+        })
+        return mangTimkKiem;
+    };
 }
