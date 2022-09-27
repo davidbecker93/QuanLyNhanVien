@@ -50,3 +50,20 @@
 .delete-btn:hover {
   color: hsl(360, 67%, 44%);
 }
+
+.alert {
+  display: grid;
+  align-items: center;
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+.alert-danger {
+  color: #721c24;
+  background: #f8d7da;
+}
+
+.alert-success {
+  color: #155724;
+  background: #d4edda;
+}

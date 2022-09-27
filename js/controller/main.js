@@ -3,6 +3,7 @@ var arr = [];
 var dsnv = new DSNV();
 var validation = new Validation();
 var currentFormat = new Intl.NumberFormat("VN-vn");
+const alertElement = document.querySelector(".alert");
 /** Call function */
 getLocalStorage();
 
@@ -34,8 +35,11 @@ function layThongTin() {
     var chucvu = getEle("chucvu").value;
     var gioLam = getEle("gioLam").value;
     isValid = true;
-    isValid &= validation.checkEmpty(tknv, "tbTKNV", "(*)Vui lòng nhập đúng mã NV");
-    isValid &= validation.checkEmpty(name, "tbTen", "(*)Vui lòng nhập tên NV");
+    //check validation
+    isValid &= validation.checkEmpty(tknv, "tbTKNV", "(*)Vui lòng nhập vào mã TKNV") && validation.doDaiKiTu(tknv, "tbTKNV", "(*)TKNV phải có từ 4-6 chữ số", 4, 6);
+    isValid &= validation.checkEmpty(name, "tbTen", "(*)Vui lòng nhập tên NV") && validation.chuoiKiTu(name, "tbTen", "(*)Vui lòng nhập tên NV là chữ");
+    isValid &= validation.checkEmpty(email, "tbEmail", "(*)Vui lòng nhập Email") && validation.checkEmail(email, "tbEmail", "(*)Vui lòng nhập đúng định dạng Email");
+    isValid &= validation.checkEmpty(pass, "tbMatKhau", "(*)Vui lòng nhập mật khẩu") && validation.doDaiKiTu(pass, "tbMatKhau", "(*)TKNV phải có từ 6-10 kí tự", 6, 10);
     if (isValid) {
         var nv = new nhanVien(tknv, name, email, pass, date, luongCB, chucvu, gioLam);
         nv.tinhTongLuong();
@@ -52,7 +56,9 @@ getEle("btnThem").addEventListener("click", function () {
 
 getEle("btnThemNV").addEventListener("click", function () {
     var nv = layThongTin();
+    displayAlert("Không thể thêm được nhân viên", "danger");
     if (nv) {
+        displayAlert("Đã thêm thành công", "success");
         dsnv.themNV(nv);
         renderTable(dsnv.arr);
         resetForm();
@@ -101,7 +107,7 @@ function editNV(tknv) {
         var nv = layThongTin();
         dsnv.suaNV(nv);
         renderTable(dsnv.arr);
-        //        resetForm();
+        displayAlert("Đã cập nhật thành công", "success");
         setLocalStorage();
     });
 }
@@ -120,9 +126,27 @@ function resetForm() {
     getEle("luongCB").value = "";
     getEle("chucvu").value = "Chọn chức vụ";
     getEle("gioLam").value = "";
+    getEle("tbTKNV").style.display = "none";
+    getEle("tbTen").style.display = "none";
+    getEle("tbEmail").style.display = "none";
+    getEle("tbMatKhau").style.display = "none";
+    getEle("tbNgay").style.display = "none";
+    getEle("tbLuongCB").style.display = "none";
+    getEle("tbChucVu").style.display = "none";
+    getEle("tbGiolam").style.display = "none";
 }
 getEle("searchName").addEventListener("keyup", function () {
     var keyword = getEle("searchName").value;
     var mangTimKiem = dsnv.timKiemNV(keyword);
     renderTable(mangTimKiem);
 })
+
+function displayAlert(text, action) {
+    alertElement.innerText = text;
+    alertElement.classList.add(`alert-${action}`);
+    // remove alert
+    setTimeout(function () {
+        alertElement.innerText = "";
+        alertElement.classList.remove(`alert-${action}`);
+    }, 1000);
+}
