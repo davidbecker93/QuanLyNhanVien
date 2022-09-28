@@ -25,7 +25,7 @@ function getEle(id) {
     return document.getElementById(id);
 }
 
-function layThongTin() {
+function layThongTin(isAdd) {
     var tknv = getEle("tknv").value;
     var name = getEle("name").value;
     var email = getEle("email").value;
@@ -36,10 +36,13 @@ function layThongTin() {
     var gioLam = getEle("gioLam").value;
     isValid = true;
     //check validation
-    isValid &= validation.checkEmpty(tknv, "tbTKNV", "(*)Vui lòng nhập vào mã TKNV") && validation.doDaiKiTu(tknv, "tbTKNV", "(*)TKNV phải có từ 4-6 chữ số", 4, 6);
+    if (isAdd){
+        isValid &= validation.checkEmpty(tknv, "tbTKNV", "(*)Vui lòng nhập vào mã TKNV") && validation.doDaiKiTu(tknv, "tbTKNV", "(*)TKNV phải có từ 4-6 chữ số", 4, 6);
+    }
     isValid &= validation.checkEmpty(name, "tbTen", "(*)Vui lòng nhập tên NV") && validation.chuoiKiTu(name, "tbTen", "(*)Vui lòng nhập tên NV là chữ");
     isValid &= validation.checkEmpty(email, "tbEmail", "(*)Vui lòng nhập Email") && validation.checkEmail(email, "tbEmail", "(*)Vui lòng nhập đúng định dạng Email");
-    isValid &= validation.checkEmpty(pass, "tbMatKhau", "(*)Vui lòng nhập mật khẩu") && validation.doDaiKiTu(pass, "tbMatKhau", "(*)TKNV phải có từ 6-10 kí tự", 6, 10);
+    isValid &= validation.checkEmpty(pass, "tbMatKhau", "(*)Vui lòng nhập mật khẩu") && validation.checkPass(pass, "tbMatKhau", "(*)Mật khẩu phải có 6-10 kí tự, có 01 kí tự in hoa, chữ số và ký tự đặc biệt");
+    isValid &= validation.checkEmpty(date, "datepicker", "(*)Vui lòng không để trống");
     if (isValid) {
         var nv = new nhanVien(tknv, name, email, pass, date, luongCB, chucvu, gioLam);
         nv.tinhTongLuong();
@@ -55,14 +58,14 @@ getEle("btnThem").addEventListener("click", function () {
 })
 
 getEle("btnThemNV").addEventListener("click", function () {
-    var nv = layThongTin();
+    var nv = layThongTin(true);
     displayAlert("Không thể thêm được nhân viên", "danger");
     if (nv) {
-        displayAlert("Đã thêm thành công", "success");
         dsnv.themNV(nv);
         renderTable(dsnv.arr);
         resetForm();
         setLocalStorage();
+        displayAlert("Đã thêm thành công", "success");
     }
 })
 
@@ -104,7 +107,7 @@ function editNV(tknv) {
         getEle("btnThemNV").style.display = "none";
     }
     getEle("btnCapNhat").addEventListener("click", function () {
-        var nv = layThongTin();
+        var nv = layThongTin(false);
         dsnv.suaNV(nv);
         renderTable(dsnv.arr);
         displayAlert("Đã cập nhật thành công", "success");

@@ -34,7 +34,7 @@ function Validation() {
     };
 
     this.checkEmail = function (value, divError, mess) {
-        var letter = "/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/";
+        var letter = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         if (value.match(letter)) {
             getEle(divError).innerHTML = "";
             getEle(divError).style.display = "none";
@@ -43,5 +43,17 @@ function Validation() {
         getEle(divError).innerHTML = mess;
         getEle(divError).style.display = "block";
         return false;
-    }
+    };
+
+    this.checkPass = function (value, divError, mess) {
+        var letter = /^(?=\S*[a-z])(?=\S*[A-Z])(?=\S*\d)(?=\S*[^\w\s])\S{6,10}$/;
+        if (value.match(letter)) {
+            getEle(divError).innerHTML = "";
+            getEle(divError).style.display = "none";
+            return true;
+        }
+        getEle(divError).innerHTML = mess;
+        getEle(divError).style.display = "block";
+        return false;
+    };
 }
