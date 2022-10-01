@@ -56,4 +56,43 @@ function Validation() {
         getEle(divError).style.display = "block";
         return false;
     };
+    this.checkluongNV = function (value, divError, mess, min, max) {
+        if (min <= value && value <= max) {
+            getEle(divError).innerHTML = "";
+            getEle(divError).style.display = "none";
+            return true;
+        }
+        getEle(divError).innerHTML = mess;
+        getEle(divError).style.display = "block";
+        return false;
+    };
+    this.checkGioLam = function (value, divError, mess, min, max) {
+        if (min <= value && value <= max) {
+            getEle(divError).innerHTML = "";
+            getEle(divError).style.display = "none";
+            return true;
+        }
+        getEle(divError).innerHTML = mess;
+        getEle(divError).style.display = "block";
+        return false;
+    };
+    this.checkMaNV = function (value,divError,mess,arr) {
+        isExist = false;
+        for (i = 0; i < arr.length; i++) {
+            var sv = arr[i];
+            if (nv.maNV === value) {
+                isExist = true;
+                break;
+            }
+        }
+
+        if (isExist) {
+            getEle(divError).innerHTML = mess;
+            getEle(divError).style.display = "block";
+            return false;
+        }
+        getEle(divError).innerHTML = "";
+        getEle(divError).style.display = "none";
+        return true;
+    };
 }

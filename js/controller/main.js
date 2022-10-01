@@ -37,12 +37,14 @@ function layThongTin(isAdd) {
     isValid = true;
     //check validation
     if (isAdd){
-        isValid &= validation.checkEmpty(tknv, "tbTKNV", "(*)Vui lòng nhập vào mã TKNV") && validation.doDaiKiTu(tknv, "tbTKNV", "(*)TKNV phải có từ 4-6 chữ số", 4, 6);
+        isValid &= validation.checkEmpty(tknv, "tbTKNV", "(*)Vui lòng nhập vào mã TKNV") && validation.doDaiKiTu(tknv, "tbTKNV", "(*)TKNV phải có từ 4-6 chữ số", 4, 6) && validation.checkMaNV(tknv,"tbTKNV","(*)Mã nhân viên đã tồn tại",dsnv.arr);
     }
     isValid &= validation.checkEmpty(name, "tbTen", "(*)Vui lòng nhập tên NV") && validation.chuoiKiTu(name, "tbTen", "(*)Vui lòng nhập tên NV là chữ");
     isValid &= validation.checkEmpty(email, "tbEmail", "(*)Vui lòng nhập Email") && validation.checkEmail(email, "tbEmail", "(*)Vui lòng nhập đúng định dạng Email");
     isValid &= validation.checkEmpty(pass, "tbMatKhau", "(*)Vui lòng nhập mật khẩu") && validation.checkPass(pass, "tbMatKhau", "(*)Mật khẩu phải có 6-10 kí tự, có 01 kí tự in hoa, chữ số và ký tự đặc biệt");
     isValid &= validation.checkEmpty(date, "datepicker", "(*)Vui lòng không để trống");
+    isValid &= validation.checkEmpty(luongCB,"tbLuongCB", "(*)Vui lòng nhập lương cơ bản") && validation.checkluongNV(luongCB,"tbLuongCB", "(*)Lương cơ bản từ 1tr đến 20tr",1000000,20000000);
+    isValid &= validation.checkEmpty(gioLam,"tbGiolam","(*)Vui lòng nhập giờ làm") && validation.checkGioLam(gioLam,"tbGiolam","(*)Giờ làm từ 80-200 giờ");
     if (isValid) {
         var nv = new nhanVien(tknv, name, email, pass, date, luongCB, chucvu, gioLam);
         nv.tinhTongLuong();
