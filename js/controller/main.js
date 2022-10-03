@@ -32,7 +32,7 @@ function layThongTin(isAdd) {
     var pass = getEle("password").value;
     var date = getEle("datepicker").value;
     var luongCB = getEle("luongCB").value;
-    var chucvu = getEle("chucvu").value;
+    var chucvu = getEle("chucVu").value;
     var gioLam = getEle("gioLam").value;
     isValid = true;
     //check validation
@@ -42,9 +42,10 @@ function layThongTin(isAdd) {
     isValid &= validation.checkEmpty(name, "tbTen", "(*)Vui lòng nhập tên NV") && validation.chuoiKiTu(name, "tbTen", "(*)Vui lòng nhập tên NV là chữ");
     isValid &= validation.checkEmpty(email, "tbEmail", "(*)Vui lòng nhập Email") && validation.checkEmail(email, "tbEmail", "(*)Vui lòng nhập đúng định dạng Email");
     isValid &= validation.checkEmpty(pass, "tbMatKhau", "(*)Vui lòng nhập mật khẩu") && validation.checkPass(pass, "tbMatKhau", "(*)Mật khẩu phải có 6-10 kí tự, có 01 kí tự in hoa, chữ số và ký tự đặc biệt");
-    isValid &= validation.checkEmpty(date, "datepicker", "(*)Vui lòng không để trống");
-    isValid &= validation.checkEmpty(luongCB,"tbLuongCB", "(*)Vui lòng nhập lương cơ bản") && validation.checkluongNV(luongCB,"tbLuongCB", "(*)Lương cơ bản từ 1tr đến 20tr",1000000,20000000);
-    isValid &= validation.checkEmpty(gioLam,"tbGiolam","(*)Vui lòng nhập giờ làm") && validation.checkGioLam(gioLam,"tbGiolam","(*)Giờ làm từ 80-200 giờ");
+    isValid &= validation.checkEmpty(date, "tbNgay", "(*)Vui lòng không để trống ngày làm");
+    isValid &= validation.checkEmpty(luongCB, "tbLuongCB", "(*)Vui lòng nhập lương cơ bản") && validation.checkluongNV(luongCB,"tbLuongCB", "(*)Lương cơ bản từ 1tr đến 20tr",1000000,20000000);
+    isValid &= validation.checkChucVu("chucVu", "tbChucVu", "(*)Vui lòng chọn chức vụ");
+    isValid &= validation.checkEmpty(gioLam, "tbGiolam", "(*)Vui lòng nhập giờ làm") && validation.checkluongNV(gioLam, "tbGiolam", "(*)Giờ làm từ 80-200 giờ",80,100);
     if (isValid) {
         var nv = new nhanVien(tknv, name, email, pass, date, luongCB, chucvu, gioLam);
         nv.tinhTongLuong();
@@ -103,7 +104,7 @@ function editNV(tknv) {
         getEle("password").value = nv.pass;
         getEle("datepicker").value = nv.date;
         getEle("luongCB").value = nv.luongCB;
-        getEle("chucvu").value = nv.chucvu;
+        getEle("chucVu").value = nv.chucvu;
         getEle("gioLam").value = nv.gioLam;
         getEle("btnCapNhat").style.display = "inline-block";
         getEle("btnThemNV").style.display = "none";
@@ -129,7 +130,7 @@ function resetForm() {
     getEle("password").value = "";
     getEle("datepicker").value = "";
     getEle("luongCB").value = "";
-    getEle("chucvu").value = "Chọn chức vụ";
+    getEle("chucVu").selectedIndex= 0;
     getEle("gioLam").value = "";
     getEle("tbTKNV").style.display = "none";
     getEle("tbTen").style.display = "none";
