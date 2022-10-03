@@ -1,6 +1,6 @@
 function Validation() {
     this.checkEmpty = function (value, divError, mess) {
-        if (value === "") {
+        if (value.trim() === "") {
             getEle(divError).innerHTML = mess;
             getEle(divError).style.display = "block";
             return false;
@@ -20,6 +20,17 @@ function Validation() {
         getEle(divError).style.display = "block";
         return false;
     };
+
+    this.checkChucVu = function (idSelect,divError,mess) {
+        if (getEle(idSelect).selectedIndex !== 0) {
+            getEle(divError).innerHTML = "";
+            getEle(divError).style.display = "none";
+            return true;
+        }
+        getEle(divError).innerHTML = mess;
+        getEle(divError).style.display = "block";
+        return false;
+    }
 
     this.chuoiKiTu = function (value, divError, mess) {
         var letter = "^[a-zA-Z_ÀÁÂÃÈÉÊẾÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶ" + "ẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợ" + "ụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$";
@@ -56,6 +67,7 @@ function Validation() {
         getEle(divError).style.display = "block";
         return false;
     };
+
     this.checkluongNV = function (value, divError, mess, min, max) {
         if (min <= value && value <= max) {
             getEle(divError).innerHTML = "";
@@ -66,21 +78,12 @@ function Validation() {
         getEle(divError).style.display = "block";
         return false;
     };
-    this.checkGioLam = function (value, divError, mess, min, max) {
-        if (min <= value && value <= max) {
-            getEle(divError).innerHTML = "";
-            getEle(divError).style.display = "none";
-            return true;
-        }
-        getEle(divError).innerHTML = mess;
-        getEle(divError).style.display = "block";
-        return false;
-    };
+
     this.checkMaNV = function (value,divError,mess,arr) {
         isExist = false;
         for (i = 0; i < arr.length; i++) {
-            var sv = arr[i];
-            if (nv.maNV === value) {
+            var nv = arr[i];
+            if (nv.tknv === value) {
                 isExist = true;
                 break;
             }
